@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        /* Sidebar styling */
+        #sidebar {
+            background-color: #343a40;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        #sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        #sidebar a:hover {
+            background-color: #495057;
+        }
+
+        .content {
+            margin-left: 250px;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            margin-top: 30px;
+            position: relative;
+            height: 350px;
+            width: 48%;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        /* Insights section */
+        #insights {
+            margin-top: 30px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div id="sidebar" class="float-left">
+        <h3 class="text-white">Finance Dashboard</h3>
+        <a href="#">Dashboard</a>
+        <a href="#">Transactions</a>
+        <a href="#">Reports</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <div class="container">
+            <!-- Form for Input Data -->
+            <h2 class="text-center">Add Monthly Income and Expenditure</h2>
+            <form id="entryForm">
+                <div class="form-row">
+                    <div class="col-md-4">
+                        <label for="income">Income</label>
+                        <input type="number" class="form-control" id="income" placeholder="Enter Income" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="expenditure">Expenditure</label>
+                        <input type="number" class="form-control" id="expenditure" placeholder="Enter Expenditure" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="month-select">Month</label>
+                        <select class="form-control" id="month-select">
+                            <option value="" selected disabled>Select Month</option>
+                            <option value="January">January</option>
+                            <option value="February">February</option>
+                            <option value="March">March</option>
+                            <option value="April">April</option>
+                            <option value="May">May</option>
+                            <option value="June">June</option>
+                            <option value="July">July</option>
+                            <option value="August">August</option>
+                            <option value="September">September</option>
+                            <option value="October">October</option>
+                            <option value="November">November</option>
+                            <option value="December">December</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                <button type="button" class="btn btn-info mt-3 ml-3" id="insightsButton">Insights</button>
+            </form>
+
+            <!-- Insights section -->
+            <div id="insights" class="d-none">
+                <h3>Data Insights</h3>
+                <p id="insightsText"></p>
+            </div>
+
+            <!-- Table to display entered data -->
+            <h3 class="text-center mt-5">Monthly Data</h3>
+            <table id="data-table" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Income</th>
+                        <th>Expenditure</th>
+                        <th>Net</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <!-- Charts to visualize data -->
+            <div class="chart-container">
+                <canvas id="lineChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="barChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="polarChart" width="400" height="400"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="doughnutChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const dataEntries = [];
+        const months = [];
+        
+        // Event listener for form submission
+        document.getElementById('entryForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const income = parseFloat(document.getElementById('income').value);
+            const expenditure = parseFloat(document.getElementById('expenditure').value);
+            const month = document.getElementById('month-select').value.trim();  // Trim any spaces
+        
+            // Check if the month already exists
+            if (!months.includes(month)) {
+                addDataEntry(month, income, expenditure);
+                months.push(month);
+                updateCharts();
+            } else {
+                alert("Data for this month already exists.");
+            }
+        });
+        
+        // Event listener for Insights button
+        document.getElementById('insightsButton').addEventListener('click', function () {
+            fetch('/insights', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataEntries)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('insightsText').textContent = data.summary;
+                document.getElementById('insights').classList.remove('d-none');
+            })
+            .catch(error => console.error('Error:', error));
+        });
+        
+        // Add entry to data and render the table
+        function addDataEntry(month, income, expenditure) {
+            const net = income - expenditure;
+            const entry = { month, income, expenditure, net };
+            dataEntries.push(entry);
+            renderTable();
+        }
+        
+        // Render the data table
+        function renderTable() {
+            const tableBody = document.querySelector("#data-table tbody");
+            tableBody.innerHTML = "";
+            dataEntries.forEach(entry => {
+                const row = `<tr>
+                    <td>${entry.month}</td>
+                    <td>${entry.income}</td>
+                    <td>${entry.expenditure}</td>
+                    <td>${entry.net}</td>
+                </tr>`;
+                tableBody.insertAdjacentHTML("beforeend", row);
+            });
+        }
+        
+        // Update all charts
+        function updateCharts() {
+            const labels = dataEntries.map(entry => entry.month);
+            const incomes = dataEntries.map(entry => entry.income);
+            const expenditures = dataEntries.map(entry => entry.expenditure);
+            const netValues = dataEntries.map(entry => entry.net);
+        
+            updateChart(lineChart, labels, incomes, expenditures);
+            updateChart(barChart, labels, incomes, expenditures);
+            updatePolarChart(polarChart, labels, incomes, expenditures);  // Update polar chart
+            updateChart(doughnutChart, labels, [sum(incomes), sum(expenditures)]);
+        }
+        
+        // Create chart
+        function createChart(elementId, type, labels = [], colors = []) {
+            const ctx = document.getElementById(elementId).getContext("2d");
+            return new Chart(ctx, {
+                type,
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: "Income",
+                            data: [],
+                            backgroundColor: colors[0] || "rgba(75, 192, 192, 0.2)",
+                            borderColor: colors[0] || "rgba(75, 192, 192, 1)",
+                            borderWidth: 1
+                        },
+                        {
+                            label: "Expenditure",
+                            data: [],
+                            backgroundColor: colors[1] || "rgba(255, 99, 132, 0.2)",
+                            borderColor: colors[1] || "rgba(255, 99, 132, 1)",
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+        
+        // Update a line/bar chart
+        function updateChart(chart, labels, incomes, expenditures) {
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = incomes;
+            chart.data.datasets[1].data = expenditures;
+            chart.update();
+        }
+        
+        // Update polar chart
+        function updatePolarChart(chart, labels, incomes, expenditures) {
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = incomes;
+            chart.data.datasets[1].data = expenditures;
+            chart.update();
+        }
+        
+        // Utility to calculate sum
+        function sum(array) {
+            return array.reduce((acc, value) => acc + value, 0);
+        }
+        
+        // Create charts
+        const lineChart = createChart("lineChart", "line");
+        const barChart = createChart("barChart", "bar");
+        const polarChart = createChart("polarChart", "polarArea", [], ["rgba(75, 192, 192, 0.2)", "rgba(255, 99, 132, 0.2)"]);  // Polar chart
+        const doughnutChart = createChart("doughnutChart", "doughnut");
+    </script>
+        
+</body>
+
+</html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Start your development with Creative Studio landing page.">
+    <meta name="author" content="Devcrud">
+    <title>Fin-Forge AI</title>
+
+    <!-- font icons -->
+    <link rel="stylesheet" href="../static/vendors/themify-icons/css/themify-icons.css">
+
+    <!-- Bootstrap + Creative Studio main styles -->
+	<link rel="stylesheet" href="../static/css/creative-studio.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+
+    <style>
+        /* Reset and Style for Blog Section */
+        #blog {
+            padding: 50px 0;
+            background-color: #f9f9f9;
+        }
+        
+        /* Section Title for Blog */
+        #blog .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #333;
+        }
+        
+        /* Force Row Layout to Show Only One Box */
+        #blog .row {
+            display: flex;
+            flex-wrap: nowrap; /* Prevent wrapping of items */
+            gap: 30px; /* Space between boxes */
+            justify-content: center; /* Center the content */
+        }
+        
+        /* Force Column to Take Full Width */
+        #blog .col-md-3 {
+            flex: 1 1 100%; /* Each column takes full width */
+            max-width: 100%; /* No maximum width constraints */
+            margin-bottom: 0; /* No bottom margin */
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow */
+            border-radius: 10px; /* Rounded corners */
+            background-color: white;
+            overflow: hidden;
+        }
+        
+        /* Style for Cards */
+        #blog .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        /* Style for Card Images */
+        #blog .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        /* Card Body Styling */
+        #blog .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        /* Card Title */
+        #blog .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #007BFF;
+            text-align: center;
+        }
+        
+        /* Card Paragraph Styling */
+        #blog .card-body p {
+            color: #6c757d;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+        
+        /* Hover Effect */
+        #blog .card:hover {
+            transform: scale(1.05); /* Hover effect */
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            #blog .col-md-3 {
+                flex: 1 1 100%; /* Ensure full width on smaller screens */
+            }
+        }
+        
+        /* Top image styling */
+        #about {
+            padding: 60px 0; /* Adds spacing above and below the section */
+            background-color: #f9f9f9; /* Light background color for contrast */
+        }
+        
+        /* Image Container Styling */
+        .about-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px; /* Space below the image */
+        }
+        
+        /* Styling the image */
+        .about-image img {
+            border-radius: 10px; /* Rounded corners for the image */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for a clean effect */
+            transition: transform 0.3s ease; /* Smooth transition for zoom effect */
+            width: 100%; /* Ensures image is responsive */
+            max-width: 100%; /* Prevents image from becoming too large */
+            object-fit: cover; /* Ensures the image covers its container proportionally */
+        }
+        
+        /* Hover effect to zoom in the image */
+        .about-image img:hover {
+            transform: scale(1.1); /* Slightly enlarge the image on hover */
+        }
+        
+        /* Text Content Styling */
+        .about-content {
+            padding: 0 30px; /* Padding inside the content block */
+        }
+        
+        .about-content h6.section-title {
+            font-size: 24px; /* Larger font size for the section title */
+            font-weight: 600; /* Slightly bolder for emphasis */
+            color: #333; /* Dark color for the title */
+            margin-bottom: 20px; /* Space below the title */
+        }
+        
+        .about-content p {
+            font-size: 16px; /* Regular font size for body text */
+            line-height: 1.6; /* Line height for better readability */
+            color: #666; /* Slightly lighter color for paragraph text */
+            margin-bottom: 15px; /* Space between paragraphs */
+        }
+        
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            /* Adjust image properties for smaller screens */
+            .about-image img {
+                width: 100%; /* Ensure image is responsive */
+                border-radius: 5px; /* Slightly smaller rounded corners for mobile */
+            }
+        }
+        </style>
+        
+    
+   
+    
+
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="40" id="home">
+    
+    <!-- Page Navigation -->
+    <nav class="navbar custom-navbar navbar-expand-lg navbar-dark" data-spy="affix" data-offset-top="20">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="../static/imgs/logo.png" alt="Download free bootstrap 4 landing page, free boootstrap 4 templates, Download free bootstrap 4.1 landing page, free boootstrap 4.1.1 templates, Creative studio Landing page">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#service">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#blog">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary btn-sm ml-lg-3" target="_blank" href="/signup" class="external">Get Started</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End Of Page Navigation -->
+
+    <!-- Page Header -->
+    <header class="header">
+        <div class="overlay">
+            <h6 class="subtitle"> Innovating Finance with Intelligent Solutions</h6>
+            <h1 class="title">Fin-Forge AI</h1>
+            <div class="buttons text-center">
+                <a href="#blog" class="btn btn-primary rounded w-lg btn-lg my-1">Our Services</a>
+                <a href="/login" class="btn btn-outline-light rounded w-lg btn-lg my-1" target="_blank" class="external">Login</a>
+            </div>              
+        </div>      
+    </header>
+    <!-- End Of Page Header -->
+
+    <!-- Box -->
+    <!-- <div class="box text-center">
+        <div class="box-item">
+            <i class="ti-vector"></i>
+            <h6 class="box-title">UX/UI Design</h6>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis excepturi, repellat esse laborum explicabo quia.</p>
+        </div>
+        <div class="box-item">
+            <i class="ti-filter"></i>
+            <h6 class="box-title">Web Development</h6>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis excepturi, repellat esse laborum explicabo quia.</p>
+        </div>
+        <div class="box-item">
+            <i class="ti-mobile"></i>
+            <h6 class="box-title">App Design</h6>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis excepturi, repellat esse laborum explicabo quia.</p>
+        </div>
+    </div>
+    End of Box -->
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Image on the left -->
+                <div class="col-md-5 col-lg-4 about-image">
+                    <img src="../static/imgs/bot.avif" alt="AI-powered financial solutions" class="img-fluid img-thumbnail">
+                </div>
+                
+                <!-- Text content on the right -->
+                <div class="col-md-7 col-lg-8 about-content">
+                    <h6 class="section-title mb-3">Revolutionizing Finance with Smart Solutions</h6>
+                    <p>Fin-Forge AI is an AI-powered financial advisor designed to streamline and enhance financial management. It offers personalized insights, real-time market data, and advanced tools like the FinBot Assistant, Equity Calculator, ARR/IRR calculators, live stock prices, and a customized Income and Expenditure Tracker with visualizations. Whether for personal finances or investment decisions, Fin-Forge AI empowers users with smarter, more efficient financial solutions tailored to their needs.</p>
+
+                    <p>In a world where financial landscapes are constantly evolving, Fin-Forge AI stands as your trusted partner, delivering intelligent solutions and personalized guidance. Whether you’re looking to optimize your investments, streamline your financial planning, or gain deeper insights into your finances, Fin-Forge AI empowers you to take charge of your future with confidence and precision. Embrace smarter financial decisions today with the power of Fin-Forge AI.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- End of About Section -->
+
+    <!-- About Section with bg -->
+    <section class="has-bg-img py-md">
+        <div class="container text-center">
+            <!-- Subtitle -->
+            <h6 class="section-subtitle">We Empower</h6>
+            <!-- Title -->
+            <h6 class="section-title mb-6">Your Financial Journey with AI-Powered Solutions.</h6>
+            
+            <!-- Widget Items -->
+            <div class="widget mb-4">
+                <div class="widget-item">
+                    <i class="ti-bar-chart"></i> <!-- Icon for analysis -->
+                    <h4>Analyze</h4>
+                </div>
+                <div class="widget-item">
+                    <i class="fa fa-calculator"></i> <!-- Font Awesome calculator icon -->
+                    <h4>Calculate</h4>
+                </div>
+                <div class="widget-item">
+                    <i class="ti-wallet"></i> <!-- Icon for tracking finances -->
+                    <h4>Track</h4>
+                </div>
+                <div class="widget-item">
+                    <i class="ti-light-bulb"></i> <!-- Icon for optimization -->
+                    <h4>Optimize</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+    <!-- End Of About Sectoin -->
+
+    <!-- Service Section -->
+    <section id="service">
+        <div class="container">
+            <h5 class="section-title text-center mb-6">Features</h5> 
+            <div class="row">
+                <div class="col-sm-4 col-md-3">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="mb-4"><i class="fas fa-briefcase text-primary"></i></h2>
+                            <h6 class="card-title">Personalized Financial Planning</h6>
+                            <p>Customized financial plans based on user goals and AI analysis.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-3">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="mb-4"><i class="fas fa-chart-pie text-primary"></i></h2>
+                            <h6 class="card-title">Investment Portfolio Management</h6>
+                            <p>Manage and optimize investments with AI-driven portfolio advice.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-3">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="mb-4"><i class="fas fa-shield-alt text-primary"></i></h2>
+                            <h6 class="card-title">Financial Risk Analysis</h6>
+                            <p>Advanced risk analysis helps mitigate financial risks with machine learning.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-3">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="mb-4"><i class="fas fa-chart-line text-primary"></i></h2>
+                            <h6 class="card-title">Real-Time Financial Insights</h6>
+                            <p>Instantly track market movements, stock prices, and financial portfolio updates.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-3">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="mb-4"><i class="fas fa-comments text-primary"></i></h2>
+                            <h6 class="card-title">Chat Assistant</h6>
+                            <p>FinBot Assistant offers real-time support and personalized financial advice.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-3">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="mb-4"><i class="fas fa-calculator text-primary"></i></h2>
+                            <h6 class="card-title">AI-Powered Financial Calculators</h6>
+                            <p>Compute financial metrics like ARR and IRR with powerful calculators.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-3">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="mb-4"><i class="fas fa-hand-holding-usd text-primary"></i></h2>
+                            <h6 class="card-title">Intelligent Income & Expense Tracker</h6>
+                            <p>Automatically categorize income, expenses, and track financial health seamlessly.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-3">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="mb-4"><i class="fas fa-university text-primary"></i></h2>
+                            <h6 class="card-title">Seamless Integration with Financial Institutions</h6>
+                            <p>Integrates with banks for consolidated view of finances and accounts.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </section>
+    
+    <!-- End of Service Section -->
+
+
+    <!-- Fatcs Section -->
+    <section class="has-bg-img bg-img-2">
+        <div class="container text-center">
+            <!-- Subtitle -->
+            <h6 class="section-subtitle">We Empower</h6>
+            <!-- Title -->
+            <h6 class="section-title mb-6">Exciting Stats</h6>
+    
+            <!-- Widget Items for Fun Facts -->
+            <div class="widget-2">
+                <div class="widget-item">
+                    <i class="fa fa-chart-line"></i> <!-- Icon for growth or analysis -->
+                    <h6 class="title">500+</h6>
+                    <div class="subtitle">Financial Insights Generated</div>
+                </div>
+                <div class="widget-item">
+                    <i class="fa fa-users"></i> <!-- Icon for happy clients -->
+                    <h6 class="title">150+</h6>
+                    <div class="subtitle">Satisfied Investors</div>
+                </div>
+                <div class="widget-item">
+                    <i class="fa fa-calculator"></i> <!-- Icon for financial planning -->
+                    <h6 class="title">1200+</h6>
+                    <div class="subtitle">Calculations Performed</div>
+                </div>
+                <div class="widget-item">
+                    <i class="fa fa-comments"></i> <!-- Icon for user feedback -->
+                    <h6 class="title">30K+</h6>
+                    <div class="subtitle">Client Feedbacks</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <iframe width="100%" height="475" src="https://www.youtube.com/embed/TP4THzsAa3M" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <!-- end of modal -->
+
+    <!-- Blog Section -->
+    <section id="blog">
+        <div class="container">
+            <!-- Section Title -->
+            <h6 class="section-title mb-6 text-center">Our Services</h6>
+    
+            <div class="row">
+                <!-- Service 1: FinBot Assistant -->
+                <div class="col-md-3">
+                    <img src="../static/imgs/servicebot.jpg" alt="FinBot Assistant">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">
+                            <a href="/chatbot" target="_blank" class="external">FinBot Assistant</a>
+                        </h5>
+                        <p>Your AI-powered financial advisor, available 24/7 for real-time insights, tailored recommendations, and financial goal management.</p>
+                        <a href="/chatbot" class="d-block mt-3"></a>
+                    </div>
+                </div>
+    
+                <!-- Service 2: Financial Calculator -->
+                <div class="col-md-3">
+                    <img src="../static/imgs/calculator.jpg" alt="Financial Calculator">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">
+                            <a href="/calculator" target="_blank" class="external">Financial Calculator</a>
+                        </h5>
+                        <p>Quickly calculate your ARR and IRR with Fin-Forge AI’s powerful tools, ensuring accuracy in investment evaluations and project profitability analysis.</p>
+                        <a href="/calculator" class="d-block mt-3"></a>
+                    </div>
+                </div>
+    
+                <!-- Service 3: Live Stock Prices -->
+                <div class="col-md-3">
+                    <img src="../static/imgs/live stock.avif" alt="Live Stock Prices">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">
+                            <a href="/stock" target="_blank" class="external">Live Stock Prices</a>
+                        </h5>
+                        <p>Track live stock prices and market movements in real-time to seize opportunities and make informed decisions.</p>
+                        <a href="/stock" class="d-block mt-3" target="_blank"></a>
+                    </div>
+                </div>
+    
+                <!-- Service 4: Personalized Income and Expenditure Tracker -->
+                <div class="col-md-3">
+                    <img src="../static/imgs/live traker.avif" alt="Personalized Income and Expenditure Tracker">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">
+                            <a href="/dashboard" target="_blank" class="external">Personalized Income and Expenditure Tracker</a>
+                        </h5>
+                        <p>Effortlessly manage your finances with Fin-Forge AI’s personalized tracker, offering insights into income, expenses, spending habits, and savings potential.</p>
+                        <a href="/dashboard" class="d-block mt-3"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+    
+    
+    
+    
+    <!-- End of Blog Section -->
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="contact-card">
+                <div class="infos">
+                    <h6 class="section-subtitle">Get Here</h6>
+                    <h6 class="section-title mb-4">Contact Us</h6>
+
+                    <div class="item">
+                        <i class="ti-location-pin"></i>
+                        <div class="">
+                            <h5>Location</h5>
+                            <p>Hitech City, Hyderabad, Telangana</p>
+                        </div>                          
+                    </div>
+                    <div class="item">
+                        <i class="ti-mobile"></i>
+                        <div>
+                            <h5>Phone Number</h5>
+                            <p>+91 (123) 456-7890</p>
+                        </div>                          
+                    </div>
+                    <div class="item">
+                        <i class="ti-email"></i>
+                        <div class="mb-0">
+                            <h5>Email Address</h5>
+                            <p>info@website.com</p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="ti-world"></i>
+                        <div class="mb-0">
+                            <h5>example.com</h5>
+                            <p>info@example.com</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form">
+                    <h6 class="section-subtitle">Available 24/7</h6>
+                    <h6 class="section-title mb-4">Get In Touch</h6>
+                    <form>
+                        <div class="form-group">
+                            <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="contact-message" id="" cols="30" rows="7" class="form-control form-control-lg" placeholder="Message"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block btn-lg mt-3">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Contact Section -->
+
+    <section class="has-bg-img py-0">
+        <div class="container">
+            <div class="footer">
+                <div class="footer-lists">
+                    <ul class="list">
+                        <li class="list-head">
+                            <h6 class="font-weight-bold">ABOUT US</h6>
+                        </li>
+                        <li class="list-body">
+                            <a href="#" class="logo">
+                                <img src="../static/imgs/logo.png" alt="FinForge AI - Your Financial Partner">
+                                <h6>FinForge AI</h6>
+                            </a>
+                            <p>At FinForge AI, we leverage cutting-edge artificial intelligence to provide personalized financial services. From financial calculators to real-time stock tracking, we aim to simplify your financial decisions and enhance your financial well-being.</p> 
+                            <p class="mt-3">
+                                Copyright <script>document.write(new Date().getFullYear())</script> &copy; FinForge AI. All rights reserved.
+                            </p>
+                        </li>
+                    </ul>
+    
+                    <ul class="list">
+                        <li class="list-head">
+                            <h6 class="font-weight-bold">CONTACT INFO</h6>
+                        </li>
+                        <li class="list-body">
+                            <p>Reach out to us, and our team will respond within 24 hours to assist with any queries or support you need.</p>
+                            <p><i class="ti-location-pin"></i> Hitech City, Hyderabad, Telangana</p>
+                            <p><i class="ti-email"></i>  contact@finforgeai.com</p>
+                            <div class="social-links">
+                                <a href="https://www.facebook.com/finforgeai" class="link" target="_blank"><i class="ti-facebook"></i></a>
+                                <a href="https://twitter.com/finforgeai" class="link" target="_blank"><i class="ti-twitter-alt"></i></a>
+                                <a href="https://plus.google.com/finforgeai" class="link" target="_blank"><i class="ti-google"></i></a>
+                                <a href="https://www.pinterest.com/finforgeai" class="link" target="_blank"><i class="ti-pinterest-alt"></i></a>
+                                <a href="https://www.instagram.com/finforgeai" class="link" target="_blank"><i class="ti-instagram"></i></a>
+                                <a href="https://rss.finforgeai.com" class="link" target="_blank"><i class="ti-rss"></i></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- core  -->
+    <script src="../static/vendors/jquery/jquery-3.4.1.js"></script>
+    <script src="../static/vendors/bootstrap/bootstrap.bundle.js"></script>
+
+    <!-- bootstrap affix -->
+    <script src="../static/vendors/bootstrap/bootstrap.affix.js"></script>
+
+    <!-- Creative Studio js -->
+    <script src="../static/js/creative-studio.js"></script>
+
+</body>
+</html>
