@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Start your development with Creative Studio landing page.">
+    <meta name="author" content="Devcrud">
+    <title>Fin-Forge AI | Services</title>
+
+    <!-- font icons -->
+    <link rel="stylesheet" href="../static/vendors/themify-icons/css/themify-icons.css">
+
+    <!-- Bootstrap + Creative Studio main styles -->
+	<link rel="stylesheet" href="../static/css/creative-studio.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Universal Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url('/static/imgs/header.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+    
+        /* Apply blur effect to background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.516); /* Dark overlay */
+            backdrop-filter: blur(20px); /* Blurred background */
+            z-index: -1; /* Ensure the overlay is behind the form */
+        }
+        
+         /* Section Title */
+         .section-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #f5f7fa;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Service Card Styling */
+        .service-card {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #2980b9;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s ease;
+        }
+
+        .card-title a:hover {
+            color: #1abc9c;
+        }
+
+        .card-text {
+            font-size: 1rem;
+            color: #7f8c8d;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .learn-more {
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .learn-more a {
+            color: #fff;
+            background-color: #1abc9c;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .learn-more a:hover {
+            background-color: #16a085;
+        }
+
+        /* Ensure all cards are equal height */
+        .row .col-md-3 {
+            display: flex;
+        }
+
+        .col-md-3 .service-card {
+            flex-grow: 1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .service-card img {
+                height: 150px;
+            }
+
+            .card-title {
+                font-size: 1.3rem;
+            }
+
+            .card-text {
+                font-size: 0.9rem;
+            }
+        }
+nav {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.btn-btn-primary {
+    background-color: #007BFF;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 30px; /* Increased value for smoother and more pronounced curve */
+    text-decoration: none;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.3s;
+}
+
+.btn-btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .signup-container {
+                padding: 25px;
+            }
+        }
+    
+        @media (max-width: 500px) {
+            h2 {
+                font-size: 1.7em;
+            }
+    
+            input[type="text"], input[type="email"], input[type="password"] {
+                padding: 10px;
+            }
+    
+            button {
+                font-size: 1.1em;
+            }
+    
+            .signup-container {
+                padding: 10px;
+            }
+        }
+    
+        /* Terms & Conditions */
+        .terms {
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 500;
+        }
+    
+        .terms span {
+            margin-right: 5px;
+        }
+    
+        .login-link {
+            color: #0073e6;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease, text-decoration 0.3s ease;
+        }
+    
+        .login-link:hover {
+            color: #005bb5;
+            text-decoration: underline;
+        }
+    
+        @media (max-width: 500px) {
+            .terms {
+                font-size: 0.9em;
+            }
+        }
+    
+        /* Password Alert Styles */
+        .password-alert {
+            display: none; /* Hidden by default */
+            color: #d9534f;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            transition: opacity 0.3s ease;
+        }
+    
+        .password-alert.show {
+            display: block;
+            opacity: 1;
+        }
+
+
+        
+    </style>
+
+
+
+
+</head>
+
+<body>
+    <!-- navigation section -->
+  <nav>
+        <a class="btn btn-primary" href="/">Home</a>
+        <a class="btn btn-primary" href="/logout">Logout</a>
+    </nav>
+ 
+    <!-- Blog Section -->
+    <section id="blog" class="py-5">
+        <div class="container">
+            <!-- Section Title -->
+            <h6 class="section-title text-center">Our Services</h6>
+
+            <!-- Service Cards -->
+            <div class="row justify-content-center">
+                <!-- Service 1: FinBot Assistant -->
+                <div class="col-md-3 mb-4">
+                    <div class="service-card">
+                        <img src="../static/imgs/servicebot.jpg" alt="FinBot Assistant">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="/chatbot" target="_blank" class="external">FinBot Assistant</a>
+                            </h5>
+                            <p class="card-text">Your AI-powered financial advisor, available 24/7 for real-time insights, tailored recommendations, and financial goal management.</p>
+                            <div class="learn-more">
+                                <a href="/chatbot" target="_blank">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 2: Financial Calculator -->
+                <div class="col-md-3 mb-4">
+                    <div class="service-card">
+                        <img src="../static/imgs/calculator.jpg" alt="Financial Calculator">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="/calculator" target="_blank" class="external">Financial Calculator</a>
+                            </h5>
+                            <p class="card-text">Quickly calculate your ARR and IRR with Fin-Forge AI’s powerful tools, ensuring accuracy in investment evaluations and project profitability analysis.</p>
+                            <div class="learn-more">
+                                <a href="/calculator" target="_blank">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 3: Live Stock Prices -->
+                <div class="col-md-3 mb-4">
+                    <div class="service-card">
+                        <img src="../static/imgs/live stock.avif" alt="Live Stock Prices">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="/stock" target="_blank" class="external">Live Stock Prices</a>
+                            </h5>
+                            <p class="card-text">Track live stock prices and market movements in real-time to seize opportunities and make informed decisions.</p>
+                            <div class="learn-more">
+                                <a href="/stock" target="_blank">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 4: Personalized Income and Expenditure Tracker -->
+                <div class="col-md-3 mb-4">
+                    <div class="service-card">
+                        <img src="../static/imgs/live traker.avif" alt="Personalized Income and Expenditure Tracker">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="/dashboard" target="_blank" class="external">Personalized Income and Expenditure Tracker</a>
+                            </h5>
+                            <p class="card-text">Effortlessly manage your finances with Fin-Forge AI’s personalized tracker, offering insights into income, expenses, spending habits, and savings potential.</p>
+                            <div class="learn-more">
+                                <a href="/dashboard" target="_blank">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap & jQuery (optional for animations and responsiveness) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

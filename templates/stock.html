@@ -1,11 +1,465 @@
-<!DOCTYPE html>
+-<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock</title>
-</head>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Start your development with Creative Studio landing page.">
+        <meta name="author" content="Devcrud">
+        <title>Fin-Forge AI | Stocks</title>
+    
+        <!-- font icons -->
+        <link rel="stylesheet" href="../static/vendors/themify-icons/css/themify-icons.css">
+    
+        <!-- Bootstrap + Creative Studio main styles -->
+        <link rel="stylesheet" href="../static/css/creative-studio.css">
+    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+     <style>
+
+        /* Universal Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: url('/static/imgs/header.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Apply blur effect to background */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Darker overlay for contrast */
+    backdrop-filter: blur(20px); /* Blurred background */
+    z-index: -1; /* Ensure the overlay is behind the form */
+}
+
+.outer-container {
+    background-color: rgba(209, 205, 205, 0.56); /* Subtle background color */
+    border-radius: 30px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.main-container {
+    display: flex;
+    width: 100%;
+}
+
+.search-section {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.history-section {
+    flex: 1;
+    margin-left: 20px;
+}
+
+h1 {
+    color: #faf3f3;
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 30px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"]:focus {
+    border-color: #6200ea;
+    box-shadow: 0 0 5px rgba(98, 0, 234, 0.5);
+}
+
+button {
+    background: linear-gradient(135deg, #6200ea, rgb(233, 42, 74)) ;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #3700b3;
+    transform: translateY(-2px);
+}
+
+.stock-info {
+    margin-top: 20px;
+    display: none;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.stock-info h2 {
+    color: #6200ea;
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.stock-info p {
+    font-size: 18px;
+    margin: 5px 0;
+    color: #333;
+}
+
+.error-message {
+    color: red;
+    display: none;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.loader {
+    display: none;
+    margin-top: 10px;
+}
+
+/* Styles for search history */
+.history-container {
+    margin-top: 30px;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: center;
+    vertical-align: middle;
+    transition: background-color 0.3s;
+    font-size: 16px;
+}
+
+th {
+    background: linear-gradient(135deg, #6200ea, rgb(223, 43, 73));
+    color: white;
+    font-weight: 600;
+    padding: 20px 10px;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: 15px 15px 0 0;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Responsive design */
+@media (max-width: 800px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .search-section, .history-section {
+        margin: 0;
+        margin-bottom: 10px;
+        margin-top: 20px;
+        color:  white;
+    }
+
+    .history-section {
+        max-height: none;
+    }
+}
+
+nav {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.btn-btn-primary {
+    background-color: #007BFF;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.3s;
+}
+
+.btn-btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+
+
+
+     </style>
+        
+    </head>
 <body>
-    <h1>stocks</h1>
+    <nav>
+        <a class="btn btn-primary" href="/">Home</a>
+        <a class="btn btn-primary" href="/chatbot">Finbot</a>
+        <a class="btn btn-primary" href="/dashboard">Tracker</a>
+        <a class="btn btn-primary" href="/logout">Logout</a>
+    </nav>
+    <div class="outer-container">
+        <div class="main-container">
+          <div class="search-section">
+            <h1>Live Stock Price Search</h1>
+            <div class="search-bar">
+              <input type="text" id="companyInput" placeholder="Enter stock symbol or company name (e.g. AAPL or Apple)" onkeydown="if (event.key === 'Enter') searchStock();" />
+            </div>
+            <button onclick="searchStock()">Search</button>
+            
+            <img id="loader" class="loader" src="https://i.imgur.com/LLF5iyg.gif" alt="Loading..." width="30" height="30" />
+    
+            <div class="stock-info" id="stockInfo">
+              <h2 id="companyName"></h2>
+              <p>Current Price: $<span id="stockPrice"></span></p>
+              <p>Opening Price: $<span id="openPrice"></span></p>
+              <p>Previous Close: $<span id="closePrice"></span></p>
+            </div>
+    
+            <div class="error-message" id="errorMessage">Company not found. Please try again.</div>
+          </div>
+    
+    <!-- Search History Table -->
+    <div class="history-section">
+      <h2>Search History</h2>
+      <div class="history-container">
+        <table id="historyTable">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Current Price</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody">
+            <!-- Search history entries will go here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+
+  <script>
+    // Top 20 stocks with current prices
+    const stocks = [
+  // Indian Companies
+  { symbol: 'RELIANCE', name: 'Reliance Industries Ltd.', price: 2480.50, open: 2460.00, close: 2475.00 },
+  { symbol: 'TCS', name: 'Tata Consultancy Services Ltd.', price: 3550.75, open: 3500.00, close: 3525.50 },
+  { symbol: 'INFY', name: 'Infosys Ltd.', price: 1450.20, open: 1435.00, close: 1442.50 },
+  { symbol: 'HDFCBANK', name: 'HDFC Bank Ltd.', price: 1665.30, open: 1645.00, close: 1655.00 },
+  { symbol: 'ICICIBANK', name: 'ICICI Bank Ltd.', price: 935.40, open: 920.00, close: 928.50 },
+  { symbol: 'HINDUNILVR', name: 'Hindustan Unilever Ltd.', price: 2545.00, open: 2520.00, close: 2535.50 },
+  { symbol: 'KOTAKBANK', name: 'Kotak Mahindra Bank Ltd.', price: 1915.75, open: 1890.00, close: 1905.00 },
+  { symbol: 'BAJAJFINSV', name: 'Bajaj Finserv Ltd.', price: 1785.60, open: 1765.00, close: 1775.50 },
+  { symbol: 'ITC', name: 'ITC Ltd.', price: 415.25, open: 410.00, close: 412.50 },
+  { symbol: 'BHARTIARTL', name: 'Bharti Airtel Ltd.', price: 790.80, open: 780.00, close: 785.50 },
+  { symbol: 'HCLTECH', name: 'HCL Technologies Ltd.', price: 1210.50, open: 1195.00, close: 1205.00 },
+  { symbol: 'ASIANPAINT', name: 'Asian Paints Ltd.', price: 3155.90, open: 3100.00, close: 3125.00 },
+  { symbol: 'LTI', name: 'Larsen & Toubro Infotech Ltd.', price: 4950.20, open: 4900.00, close: 4935.00 },
+  { symbol: 'MARUTI', name: 'Maruti Suzuki India Ltd.', price: 10150.40, open: 10000.00, close: 10090.00 },
+  { symbol: 'SBIN', name: 'State Bank of India', price: 595.35, open: 585.00, close: 590.00 },
+  { symbol: 'ULTRACEMCO', name: 'UltraTech Cement Ltd.', price: 8250.00, open: 8200.00, close: 8225.00 },
+  { symbol: 'ADANIGREEN', name: 'Adani Green Energy Ltd.', price: 950.25, open: 930.00, close: 940.00 },
+  { symbol: 'NTPC', name: 'NTPC Ltd.', price: 205.15, open: 200.00, close: 203.00 },
+  { symbol: 'JSWSTEEL', name: 'JSW Steel Ltd.', price: 680.40, open: 670.00, close: 675.50 },
+  { symbol: 'SUNPHARMA', name: 'Sun Pharmaceutical Industries Ltd.', price: 1060.90, open: 1050.00, close: 1055.50 },
+  { symbol: 'WIPRO', name: 'Wipro Ltd.', price: 410.25, open: 405.00, close: 408.00 },
+  { symbol: 'POWERGRID', name: 'Power Grid Corporation of India Ltd.', price: 235.45, open: 230.00, close: 233.50 },
+  { symbol: 'ADANIPORTS', name: 'Adani Ports and SEZ Ltd.', price: 805.60, open: 795.00, close: 800.00 },
+  { symbol: 'HDFCLIFE', name: 'HDFC Life Insurance Company Ltd.', price: 625.80, open: 615.00, close: 620.00 },
+  { symbol: 'COALINDIA', name: 'Coal India Ltd.', price: 215.20, open: 210.00, close: 213.50 },
+  { symbol: 'BRITANNIA', name: 'Britannia Industries Ltd.', price: 4685.30, open: 4600.00, close: 4650.00 },
+  { symbol: 'TATAMOTORS', name: 'Tata Motors Ltd.', price: 615.55, open: 600.00, close: 608.00 },
+  { symbol: 'BAJAJ-AUTO', name: 'Bajaj Auto Ltd.', price: 4550.45, open: 4500.00, close: 4530.00 },
+  { symbol: 'M&M', name: 'Mahindra & Mahindra Ltd.', price: 1550.00, open: 1530.00, close: 1540.00 },
+  { symbol: 'DABUR', name: 'Dabur India Ltd.', price: 570.85, open: 560.00, close: 565.00 },
+  { symbol: 'TECHM', name: 'Tech Mahindra Ltd.', price: 1150.75, open: 1125.00, close: 1140.00 },
+  { symbol: 'PIDILITIND', name: 'Pidilite Industries Ltd.', price: 2650.50, open: 2620.00, close: 2635.00 },
+  { symbol: 'DIVISLAB', name: 'Divi’s Laboratories Ltd.', price: 3485.20, open: 3450.00, close: 3470.00 },
+  { symbol: 'BPCL', name: 'Bharat Petroleum Corporation Ltd.', price: 365.65, open: 360.00, close: 363.00 },
+  { symbol: 'INDUSINDBK', name: 'IndusInd Bank Ltd.', price: 1185.30, open: 1170.00, close: 1178.00 },
+  { symbol: 'HAVELLS', name: 'Havells India Ltd.', price: 1305.45, open: 1280.00, close: 1295.00 },
+  { symbol: 'ICICIPRULI', name: 'ICICI Prudential Life Insurance Company Ltd.', price: 485.55, open: 480.00, close: 482.50 },
+  { symbol: 'NAUKRI', name: 'Info Edge (India) Ltd.', price: 4200.10, open: 4150.00, close: 4180.00 },
+  { symbol: 'APOLLOHOSP', name: 'Apollo Hospitals Enterprise Ltd.', price: 5170.75, open: 5100.00, close: 5150.00 },
+  { symbol: 'BANDHANBNK', name: 'Bandhan Bank Ltd.', price: 235.90, open: 230.00, close: 233.50 },
+  { symbol: 'ONGC', name: 'Oil and Natural Gas Corporation Ltd.', price: 165.20, open: 160.00, close: 162.00 },
+  { symbol: 'BIOCON', name: 'Biocon Ltd.', price: 300.85, open: 295.00, close: 298.00 },
+  { symbol: 'SHREECEM', name: 'Shree Cement Ltd.', price: 26800.10, open: 26500.00, close: 26650.00 },
+  { symbol: 'TITAN', name: 'Titan Company Ltd.', price: 3245.50, open: 3200.00, close: 3225.00 },
+  { symbol: 'INDIGO', name: 'InterGlobe Aviation Ltd.', price: 2390.60, open: 2350.00, close: 2375.00 },
+  { symbol: 'HEROMOTOCO', name: 'Hero MotoCorp Ltd.', price: 2950.20, open: 2900.00, close: 2935.00 },
+  { symbol: 'AMBUJACEM', name: 'Ambuja Cements Ltd.', price: 425.85, open: 420.00, close: 423.50 },
+  
+  // International Companies
+  { symbol: 'AAPL', name: 'Apple Inc.', price: 175.08, open: 173.00, close: 174.55 },
+  { symbol: 'MSFT', name: 'Microsoft Corporation', price: 340.45, open: 338.50, close: 339.90 },
+  { symbol: 'GOOGL', name: 'Alphabet Inc.', price: 139.45, open: 138.70, close: 139.00 },
+  { symbol: 'AMZN', name: 'Amazon.com, Inc.', price: 142.78, open: 141.50, close: 142.50 },
+  { symbol: 'META', name: 'Meta Platforms, Inc.', price: 299.50, open: 297.00, close: 298.20 },
+  { symbol: 'TSLA', name: 'Tesla, Inc.', price: 265.42, open: 263.00, close: 264.20 },
+  { symbol: 'BRK.A', name: 'Berkshire Hathaway Inc.', price: 500300.00, open: 499000.00, close: 500000.00 },
+  { symbol: 'JNJ', name: 'Johnson & Johnson', price: 164.55, open: 163.00, close: 163.80 },
+  { symbol: 'V', name: 'Visa Inc.', price: 245.10, open: 243.00, close: 244.90 },
+  { symbol: 'PG', name: 'Procter & Gamble Co.', price: 143.25, open: 142.00, close: 143.00 },
+  { symbol: 'NFLX', name: 'Netflix, Inc.', price: 458.33, open: 455.00, close: 457.00 },
+  { symbol: 'NVDA', name: 'NVIDIA Corporation', price: 455.09, open: 450.00, close: 454.00 },
+  { symbol: 'DIS', name: 'The Walt Disney Company', price: 97.76, open: 96.00, close: 96.90 },
+  { symbol: 'INTC', name: 'Intel Corporation', price: 35.85, open: 35.50, close: 35.70 },
+  { symbol: 'CMCSA', name: 'Comcast Corporation', price: 39.75, open: 39.00, close: 39.50 },
+  { symbol: 'PEP', name: 'PepsiCo, Inc.', price: 179.50, open: 178.00, close: 179.00 },
+  { symbol: 'KO', name: 'The Coca-Cola Company', price: 58.34, open: 57.50, close: 57.80 },
+  { symbol: 'MRK', name: 'Merck & Co., Inc.', price: 112.15, open: 111.00, close: 111.80 },
+  { symbol: 'XOM', name: 'Exxon Mobil Corporation', price: 106.80, open: 105.00, close: 106.00 },
+  { symbol: 'CSCO', name: 'Cisco Systems, Inc.', price: 51.90, open: 51.00, close: 51.40 },
+  { symbol: 'T', name: 'AT&T Inc.', price: 14.85, open: 14.50, close: 14.75 },
+  { symbol: 'PYPL', name: 'PayPal Holdings, Inc.', price: 59.85, open: 58.00, close: 59.10 },
+  { symbol: 'ADBE', name: 'Adobe Inc.', price: 532.55, open: 528.00, close: 531.00 },
+  { symbol: 'ORCL', name: 'Oracle Corporation', price: 115.15, open: 113.00, close: 114.50 },
+  { symbol: 'BA', name: 'The Boeing Company', price: 190.35, open: 187.00, close: 189.50 },
+  { symbol: 'VZ', name: 'Verizon Communications Inc.', price: 33.50, open: 32.80, close: 33.20 },
+  { symbol: 'GS', name: 'Goldman Sachs Group, Inc.', price: 332.45, open: 330.00, close: 331.50 },
+  { symbol: 'JPM', name: 'JPMorgan Chase & Co.', price: 143.25, open: 141.00, close: 142.50 },
+  { symbol: 'C', name: 'Citigroup Inc.', price: 41.55, open: 40.80, close: 41.20 },
+  { symbol: 'GE', name: 'General Electric Company', price: 113.45, open: 111.00, close: 112.80 },
+  { symbol: 'MCD', name: 'McDonald’s Corporation', price: 275.55, open: 272.00, close: 274.50 },
+  { symbol: 'SBUX', name: 'Starbucks Corporation', price: 96.75, open: 95.00, close: 96.00 },
+  { symbol: 'CRM', name: 'Salesforce, Inc.', price: 213.20, open: 211.00, close: 212.50 },
+  { symbol: 'SPOT', name: 'Spotify Technology S.A.', price: 155.90, open: 154.00, close: 155.20 },
+  { symbol: 'NFLX', name: 'Netflix, Inc.', price: 460.75, open: 457.00, close: 459.50 },
+  { symbol: 'AMGN', name: 'Amgen Inc.', price: 258.35, open: 255.00, close: 257.50 },
+  { symbol: 'UPS', name: 'United Parcel Service, Inc.', price: 158.45, open: 156.00, close: 157.80 },
+  { symbol: 'NKE', name: 'Nike, Inc.', price: 105.65, open: 104.00, close: 105.00 },
+  { symbol: 'CAT', name: 'Caterpillar Inc.', price: 242.50, open: 240.00, close: 241.50 },
+  { symbol: 'FDX', name: 'FedEx Corporation', price: 240.90, open: 238.00, close: 239.50 },
+  { symbol: 'HON', name: 'Honeywell International Inc.', price: 194.25, open: 192.00, close: 193.50 },
+  { symbol: 'IBM', name: 'International Business Machines Corporation', price: 135.80, open: 134.00, close: 135.00 },
+  { symbol: 'MMM', name: '3M Company', price: 96.20, open: 95.00, close: 95.80 },
+  { symbol: 'NEE', name: 'NextEra Energy, Inc.', price: 72.15, open: 71.00, close: 71.80 },
+  { symbol: 'ABBV', name: 'AbbVie Inc.', price: 151.45, open: 150.00, close: 150.80 },
+  { symbol: 'PFE', name: 'Pfizer Inc.', price: 33.10, open: 32.50, close: 32.90 },
+  { symbol: 'LLY', name: 'Eli Lilly and Company', price: 570.50, open: 565.00, close: 568.00 }
+];
+
+    const history = [];
+
+    function searchStock() {
+      const input = document.getElementById('companyInput').value.toUpperCase();
+      const stock = stocks.find(stock => stock.symbol === input || stock.name.toUpperCase().includes(input));
+
+      const loader = document.getElementById('loader');
+      const stockInfo = document.getElementById('stockInfo');
+      const errorMessage = document.getElementById('errorMessage');
+      const historyBody = document.getElementById('historyBody');
+      
+      loader.style.display = 'block'; // Show loader
+      stockInfo.style.display = 'none'; // Hide stock info
+      errorMessage.style.display = 'none'; // Hide error message
+
+      setTimeout(() => {
+        loader.style.display = 'none'; // Hide loader
+        if (stock) {
+          // Update stock info
+          document.getElementById('companyName').innerText = stock.name;
+          document.getElementById('stockPrice').innerText = stock.price.toFixed(2);
+          document.getElementById('openPrice').innerText = stock.open.toFixed(2);
+          document.getElementById('closePrice').innerText = stock.close.toFixed(2);
+          stockInfo.style.display = 'block'; // Show stock info
+          
+          // Add to history
+          const timestamp = new Date().toLocaleString();
+          history.push({ symbol: stock.symbol, price: stock.price.toFixed(2), timestamp });
+          updateHistoryTable(history);
+        } else {
+          errorMessage.style.display = 'block'; // Show error message
+        }
+      }, 1000); // Simulate a delay for loading
+    }
+
+    function updateHistoryTable(history) {
+      const historyBody = document.getElementById('historyBody');
+      historyBody.innerHTML = ''; // Clear existing history
+
+      // Populate history table
+      history.forEach(entry => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${entry.symbol}</td>
+          <td>$${entry.price}</td>
+          <td>${entry.timestamp}</td>
+        `;
+        historyBody.appendChild(row);
+      });
+    }
+  </script>
+
 </body>
 </html>

@@ -240,30 +240,31 @@
 
     <div class="login-container">
         <h2>Fin-Forge AI | Login</h2>
-        <form id="login-form">
+        <form id="login-form" method="POST" action="{{ url_for('login') }}">
             <div class="form-group">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" placeholder="Enter your email" required>
             </div>
-
+    
             <div class="form-group">
                 <label for="password">Password</label>
                 <div style="position: relative;">
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                    <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+                    <i class="fas fa-eye toggle-password" id="togglePassword"></i> <!-- Eye icon for toggle -->
                 </div>
             </div>
-
+    
             <div class="form-group">
                 <button type="submit">Login</button>
             </div>
-
+    
             <p class="terms">
                 <span>Don't have an account?</span>
-                <a href="/signup" class="signup-link">Sign up here</a>.
+                <a href="{{ url_for('signup') }}" class="signup-link">Sign up here</a>.
             </p>
         </form>
     </div>
+    
 
     <script>
         // Toggle Password Visibility for Password field

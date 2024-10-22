@@ -1,11 +1,559 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Fin-Forge AI - Your go-to financial calculator for various financial assessments.">
+    <meta name="author" content="Devcrud">
+    <meta name="keywords" content="Financial Calculator, Simple Interest, Compound Interest, Loan Payment, NPV, IRR, ARR, PI">
+    <title>Fin-Forge AI | Services</title>
+
+    <!-- Font Icons -->
+    <link rel="stylesheet" href="../static/vendors/themify-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Bootstrap + Creative Studio main styles -->
+    <link rel="stylesheet" href="../static/css/creative-studio.css">
+
+    <style>
+
+        /* Universal Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: url('/static/imgs/header.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Apply blur effect to background */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    backdrop-filter: blur(20px); /* Blurred background */
+    z-index: -1; /* Ensure the overlay is behind the form */
+}
+
+/* Main container for sidebar and calculators */
+.main-container {
+    display: flex;
+    margin: 10px; /* Adjust margin to reduce space */
+    padding: 20px; /* Add padding for internal spacing */
+    background-color: #ffffffa7; /* Background color for the box */
+    border-radius: 10px; /* More rounded corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Deeper shadow for depth */
+    width: 1200px;
+    margin-top: 50px;
+}
+
+/* Sidebar styles */
+.sidebar {
+    width: 300px;
+    margin-right: 20px; /* Reduced margin for closer spacing */
+    padding: 20px;
+    background-color: #12121200; /* Slightly softer dark sidebar background */
+    border-radius: 10px; /* Match the container's rounding */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Consistent shadow */
+}
+
+.sidebar h2 {
+    text-align: center;
+    color: #13131396; /* Light text for contrast */
+    margin-bottom: 20px;
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+.sidebar button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(135deg, rgb(232, 29, 63), purple); /* Softer vibrant button color */
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar button:hover {
+    background-color: #e91e63; /* Darker shade on hover */
+    transform: translateY(-2px);
+}
+
+/* Calculator container */
+.calculator-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; /* Centering horizontally */
+    align-items: flex-start; /* Aligning calculators to the top */
+    padding: 20px;
+}
+
+/* Calculator styles */
+.calculator {
+    transition: opacity 0.1s ease, transform 0.2s ease;
+    display: none; 
+}
+
+
+.calculator.active {
+    display: block; /* Show active calculator */
+    opacity: 1; /* Fully opaque */
+}
+
+/* Input styles */
+input[type="number"],
+input[type="text"] {
+    width: calc(100% - 20px); /* Full width minus padding */
+    padding: 14px;
+    margin: 10px 0;
+    border-radius: 5px; /* Slightly round inputs */
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Inner shadow for inputs */
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus {
+    border-color: #007BFF; /* Highlight border on focus */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue shadow on focus */
+}
+
+/* Button styles */
+button {
+    background:linear-gradient(135deg, blue, rgb(235, 13, 13)); /* Main button color */
+    color: white;
+    padding: 14px 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Full width buttons */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: translateY(-2px);
+}
+
+/* Result and interpretation styles */
+.result {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f1f1f1; /* Soft gray background */
+    border-radius: 5px; /* Rounded corners for results */
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+    text-align: center; /* Center the text */
+    border-left: 5px solid #007BFF; /* Emphasis with a left border */
+    display: none; /* Initially hidden */
+}
+
+.interpretation {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #e3f2fd; /* Light blue background for interpretations */
+    border-radius: 5px; /* Rounded corners */
+    color: #0c5460; /* Dark blue text for visibility */
+    font-size: 1em;
+    border-left: 5px solid #17a2b8; /* Blue border for interpretation */
+    display: none; /* Initially hidden */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column; /* Stack elements on smaller screens */
+        padding: 20px;
+    }
+
+    .main-container {
+        flex-direction: column; /* Stack sidebar and calculator vertically */
+    }
+
+    .sidebar {
+        width: 100%; /* Full width sidebar */
+        margin-right: 0; /* Remove margin */
+        margin-bottom: 20px; /* Space below sidebar */
+    }
+
+    .calculator {
+        padding: 20px; /* Less padding on smaller devices */
+    }
+}
+
+nav {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.btn-btn-primary {
+    background-color: #007BFF;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 30px; /* Increased value for smoother and more pronounced curve */
+    text-decoration: none;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.3s;
+}
+
+.btn-btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+
+    </style>
+    
 </head>
+
 <body>
-    <h1>This is calculator</h1>
+    <nav>
+        <a class="btn btn-primary" href="/">Home</a>
+        <a class="btn btn-primary" href="/chatbot">AI Advisor</a>
+        <a class="btn btn-primary" href="/stock">Stocks</a>
+        <a class="btn btn-primary" href="/stock">Tracker</a>
+        <a class="btn btn-primary" href="/logout">Logout</a>
+    </nav>
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Financial Calculator</h2>
+            <button onclick="showCalculator('si')" aria-label="Calculate Simple Interest">Simple Interest</button>
+            <button onclick="showCalculator('ci')" aria-label="Calculate Compound Interest">Compound Interest</button>
+            <button onclick="showCalculator('loan')" aria-label="Calculate Loan Payment">Loan Payment</button>
+            <button onclick="showCalculator('npv')" aria-label="Calculate Net Present Value">Net Present Value</button>
+            <button onclick="showCalculator('irr')" aria-label="Calculate Internal Rate of Return">Internal Rate of Return</button>
+            <button onclick="showCalculator('arr')" aria-label="Calculate Average Rate of Return">Average Rate of Return</button>
+            <button onclick="showCalculator('pi')" aria-label="Calculate Profitability Index">Profitability Index</button>
+        </div>
+
+        <div class="calculator-container">
+            <div id="calculator-si" class="calculator">
+                <h3>Simple Interest Calculator</h3>
+                <input type="number" id="principal" placeholder="Principal Amount" aria-label="Principal Amount">
+                <input type="number" id="rate" placeholder="Rate of Interest (%)" aria-label="Rate of Interest">
+                <input type="number" id="time" placeholder="Time (years)" aria-label="Time">
+                <button onclick="calculateSI()">Calculate</button>
+                <div id="result-si" class="result"></div>
+                <div id="interpretation-si" class="interpretation"></div>
+            </div>
+
+            <div id="calculator-ci" class="calculator">
+                <h3>Compound Interest Calculator</h3>
+                <input type="number" id="principal-ci" placeholder="Principal Amount" aria-label="Principal Amount">
+                <input type="number" id="rate-ci" placeholder="Rate of Interest (%)" aria-label="Rate of Interest">
+                <input type="number" id="time-ci" placeholder="Time (years)" aria-label="Time">
+                <button onclick="calculateCI()">Calculate</button>
+                <div id="result-ci" class="result"></div>
+                <div id="interpretation-ci" class="interpretation"></div>
+            </div>
+
+            <div id="calculator-loan" class="calculator">
+                <h3>Loan Payment Calculator</h3>
+                <input type="number" id="loan-amount" placeholder="Loan Amount" aria-label="Loan Amount">
+                <input type="number" id="annual-rate" placeholder="Annual Interest Rate (%)" aria-label="Annual Interest Rate">
+                <input type="number" id="loan-term" placeholder="Loan Term (years)" aria-label="Loan Term">
+                <button onclick="calculateLoan()">Calculate</button>
+                <div id="result-loan" class="result"></div>
+                <div id="interpretation-loan" class="interpretation"></div>
+            </div>
+
+            <div id="calculator-npv" class="calculator">
+                <h3>Net Present Value Calculator</h3>
+                <input type="text" id="cash-flows" placeholder="Cash Flows (comma-separated)" aria-label="Cash Flows">
+                <small>Example: 1000, 1500, 2000, 2500</small>
+                <input type="number" id="discount-rate" placeholder="Discount Rate (%)" aria-label="Discount Rate">
+                <button onclick="calculateNPV()">Calculate</button>
+                <div id="result-npv" class="result"></div>
+                <div id="interpretation-npv" class="interpretation"></div>
+            </div>
+            
+
+            <div id="calculator-irr" class="calculator">
+                <h3>Internal Rate of Return Calculator</h3>
+                <input type="text" id="cash-flows-irr" placeholder="Cash Flows (comma-separated)" aria-label="Cash Flows">
+                <small>Example: -10000, 2000, 8000, 9000, 6000</small>
+                <button onclick="calculateIRR()">Calculate</button>
+                <div id="result-irr" class="result"></div>
+                <div id="interpretation-irr" class="interpretation"></div>
+            </div>
+            
+
+            <div id="calculator-arr" class="calculator">
+                <h3>Average Rate of Return Calculator</h3>
+                <input type="number" id="total-gain" placeholder="Total Gain" aria-label="Total Gain">
+                <input type="number" id="total-investment" placeholder="Total Investment" aria-label="Total Investment">
+                <input type="number" id="investment-period" placeholder="Enter Investment Period (in years)" />
+                <button onclick="calculateARR()">Calculate</button>
+                <div id="result-arr" class="result"></div>
+                <div id="interpretation-arr" class="interpretation"></div>
+            </div>
+
+            <div id="calculator-pi" class="calculator">
+                <h3>Profitability Index Calculator</h3>
+                <input type="number" id="npv-pi" placeholder="Net Present Value" aria-label="Net Present Value">
+                <input type="number" id="cost-pi" placeholder="Cost of Investment" aria-label="Cost of Investment">
+                <button onclick="calculatePI()">Calculate</button>
+                <div id="result-pi" class="result"></div>
+                <div id="interpretation-pi" class="interpretation"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showCalculator(calculatorId) {
+            const activeCalculator = document.querySelector('.calculator.active');
+            const selectedCalculator = document.getElementById(`calculator-${calculatorId}`);
+    
+            if (activeCalculator) {
+                activeCalculator.style.opacity = '1'; // Start fading out
+                activeCalculator.style.transform = 'scale(0.9)'; // Scale down during fade
+                setTimeout(() => {
+                    activeCalculator.classList.remove('active'); // Hide after fading out
+                    activeCalculator.style.display = 'none'; // Remove from display
+                    showNewCalculator(selectedCalculator); // Show the new calculator
+                }, 100); // Match the timeout to the transition duration
+            } else {
+                // If no calculator is active, just show the new one
+                showNewCalculator(selectedCalculator);
+            }
+        }
+    
+        function showNewCalculator(selectedCalculator) {
+            selectedCalculator.style.display = 'block'; // Show the selected calculator
+            selectedCalculator.style.opacity = '0'; // Start from invisible
+            selectedCalculator.style.transform = 'scale(0.9)'; // Start scaled down
+            setTimeout(() => {
+                selectedCalculator.style.opacity = '1'; // Fade in
+                selectedCalculator.style.transform = 'scale(1)'; // Scale to normal
+                selectedCalculator.classList.add('active');
+            }, 0); // Delay for display to take effect
+        }
+    
+        function calculateSI() {
+            const principal = parseFloat(document.getElementById('principal').value);
+            const rate = parseFloat(document.getElementById('rate').value);
+            const time = parseFloat(document.getElementById('time').value);
+            const resultElement = document.getElementById('result-si');
+            const interpretationElement = document.getElementById('interpretation-si');
+    
+            if (isNaN(principal) || isNaN(rate) || isNaN(time) || principal <= 0 || rate <= 0 || time <= 0) {
+                resultElement.innerHTML = "Please enter valid positive numbers.";
+                resultElement.style.display = "block"; // Show result
+                interpretationElement.style.display = "none"; // Hide interpretation
+                return;
+            }
+    
+            const interest = (principal * rate * time) / 100;
+            resultElement.innerHTML = `Simple Interest: ₹${interest.toFixed(2)}`; // Updated to ₹
+            resultElement.style.display = "block"; // Show result
+            interpretationElement.innerHTML = `This is the interest earned on a principal amount of ₹${principal} at a rate of ${rate}% for ${time} years.`; // Updated to ₹
+            interpretationElement.style.display = "block"; // Show interpretation
+        }
+    
+        function calculateCI() {
+            const principal = parseFloat(document.getElementById('principal-ci').value);
+            const rate = parseFloat(document.getElementById('rate-ci').value);
+            const time = parseFloat(document.getElementById('time-ci').value);
+            const resultElement = document.getElementById('result-ci');
+            const interpretationElement = document.getElementById('interpretation-ci');
+    
+            if (isNaN(principal) || isNaN(rate) || isNaN(time) || principal <= 0 || rate <= 0 || time <= 0) {
+                resultElement.innerHTML = "Please enter valid positive numbers.";
+                resultElement.style.display = "block"; // Show result
+                interpretationElement.style.display = "none"; // Hide interpretation
+                return;
+            }
+    
+            const amount = principal * Math.pow((1 + (rate / 100)), time);
+            const interest = amount - principal;
+            resultElement.innerHTML = `Compound Interest: ₹${interest.toFixed(2)}`; // Updated to ₹
+            resultElement.style.display = "block"; // Show result
+            interpretationElement.innerHTML = `This is the interest earned on a principal amount of ₹${principal} compounded annually at a rate of ${rate}% for ${time} years.`; // Updated to ₹
+            interpretationElement.style.display = "block"; // Show interpretation
+        }
+    
+        function calculateLoan() {
+            const loanAmount = parseFloat(document.getElementById('loan-amount').value);
+            const annualRate = parseFloat(document.getElementById('annual-rate').value);
+            const loanTerm = parseFloat(document.getElementById('loan-term').value);
+            const resultElement = document.getElementById('result-loan');
+            const interpretationElement = document.getElementById('interpretation-loan');
+    
+            if (isNaN(loanAmount) || isNaN(annualRate) || isNaN(loanTerm) || loanAmount <= 0 || annualRate <= 0 || loanTerm <= 0) {
+                resultElement.innerHTML = "Please enter valid positive numbers.";
+                resultElement.style.display = "block"; // Show result
+                interpretationElement.style.display = "none"; // Hide interpretation
+                return;
+            }
+    
+            const monthlyRate = annualRate / 100 / 12;
+            const numberOfPayments = loanTerm * 12;
+            const monthlyPayment = (loanAmount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -numberOfPayments));
+            resultElement.innerHTML = `Monthly Payment: ₹${monthlyPayment.toFixed(2)}`; // Updated to ₹
+            resultElement.style.display = "block"; // Show result
+            interpretationElement.innerHTML = `This is the monthly payment for a loan amount of ₹${loanAmount} at an annual interest rate of ${annualRate}% over ${loanTerm} years.`; // Updated to ₹
+            interpretationElement.style.display = "block"; // Show interpretation
+        }
+    
+        function calculateNPV() {
+            const cashFlows = document.getElementById('cash-flows').value.split(',').map(Number);
+            const discountRate = parseFloat(document.getElementById('discount-rate').value);
+            const resultElement = document.getElementById('result-npv');
+            const interpretationElement = document.getElementById('interpretation-npv');
+    
+            if (!cashFlows.every(flow => !isNaN(flow) && flow >= 0) || isNaN(discountRate) || discountRate < 0) {
+                resultElement.innerHTML = "Please enter valid cash flows and a non-negative discount rate.";
+                resultElement.style.display = "block"; // Show result
+                interpretationElement.style.display = "none"; // Hide interpretation
+                return;
+            }
+    
+            let npv = 0;
+            cashFlows.forEach((flow, index) => {
+                npv += flow / Math.pow((1 + discountRate / 100), index);
+            });
+    
+            resultElement.innerHTML = `Net Present Value: ₹${npv.toFixed(2)}`; // Updated to ₹
+            resultElement.style.display = "block"; // Show result
+            interpretationElement.innerHTML = `This represents the present value of expected future cash flows of ₹${cashFlows.join(", ")} discounted at a rate of ${discountRate}%.`; // Updated to ₹
+            interpretationElement.style.display = "block"; // Show interpretation
+        }
+    
+        function calculateIRR() {
+            const cashFlows = document.getElementById('cash-flows-irr').value.split(',').map(Number);
+            const resultElement = document.getElementById('result-irr');
+            const interpretationElement = document.getElementById('interpretation-irr');
+    
+            if (!cashFlows.every(flow => !isNaN(flow)) || cashFlows.length < 2) {
+                resultElement.innerHTML = "Please enter valid cash flows.";
+                resultElement.style.display = "block"; // Show result
+                interpretationElement.style.display = "none"; // Hide interpretation
+                return;
+            }
+    
+            const irr = calculateIRRValue(cashFlows);
+            resultElement.innerHTML = `Internal Rate of Return: ${irr.toFixed(2)}%`;
+            resultElement.style.display = "block"; // Show result
+            interpretationElement.innerHTML = `This is the discount rate that makes the net present value of the cash flows equal to zero.`;
+            interpretationElement.style.display = "block"; // Show interpretation
+        }
+    
+        function calculateARR() {
+    const totalGain = parseFloat(document.getElementById('total-gain').value);
+    const totalInvestment = parseFloat(document.getElementById('total-investment').value);
+    const investmentPeriod = parseFloat(document.getElementById('investment-period').value); // Add input for investment period
+    const resultElement = document.getElementById('result-arr');
+    const interpretationElement = document.getElementById('interpretation-arr');
+
+    // Check if inputs are valid
+    if (isNaN(totalGain) || isNaN(totalInvestment) || isNaN(investmentPeriod) || 
+        totalInvestment <= 0 || investmentPeriod <= 0) {
+        resultElement.innerHTML = "Please enter valid positive numbers.";
+        resultElement.style.display = "block"; // Show result
+        interpretationElement.style.display = "none"; // Hide interpretation
+        return;
+    }
+
+    // Calculate Average Annual Profit
+    const averageAnnualProfit = totalGain / investmentPeriod;
+
+    // Calculate ARR
+    const arr = (averageAnnualProfit / totalInvestment) *  100  ;
+    
+    // Display results
+    resultElement.innerHTML = `Average Rate of Return: ${arr.toFixed(2)}%`;
+    resultElement.style.display = "block"; // Show result
+    interpretationElement.innerHTML = `This indicates the return on investment as a percentage.`;
+    interpretationElement.style.display = "block"; // Show interpretation
+}
+
+    
+        function calculatePI() {
+            const npv = parseFloat(document.getElementById('npv-pi').value);
+            const cost = parseFloat(document.getElementById('cost-pi').value);
+            const resultElement = document.getElementById('result-pi');
+            const interpretationElement = document.getElementById('interpretation-pi');
+    
+            if (isNaN(npv) || isNaN(cost) || cost <= 0) {
+                resultElement.innerHTML = "Please enter valid positive numbers.";
+                resultElement.style.display = "block"; // Show result
+                interpretationElement.style.display = "none"; // Hide interpretation
+                return;
+            }
+    
+            const pi = npv / cost;
+            resultElement.innerHTML = `Profitability Index: ${pi.toFixed(2)}`;
+            resultElement.style.display = "block"; // Show result
+            interpretationElement.innerHTML = `This indicates the value created per unit of investment.`;
+            interpretationElement.style.display = "block"; // Show interpretation
+        }
+    
+        function calculateIRRValue(cashFlows) {
+            let guess = 0.1; // Initial guess for IRR
+            const tolerance = 0.0001; // Acceptable tolerance
+            const maxIterations = 1000; // Max iterations
+            let iteration = 0;
+    
+            while (iteration < maxIterations) {
+                const npv = cashFlows.reduce((acc, cashFlow, index) => {
+                    return acc + (cashFlow / Math.pow(1 + guess, index));
+                }, 0);
+                
+                const npvDerivative = cashFlows.reduce((acc, cashFlow, index) => {
+                    return acc - (index * cashFlow / Math.pow(1 + guess, index + 1));
+                }, 0);
+    
+                // Prevent division by zero
+                if (npvDerivative === 0) {
+                    return NaN; // Indicate failure to converge
+                }
+    
+                const newGuess = guess - npv / npvDerivative;
+    
+                if (Math.abs(newGuess - guess) < tolerance) {
+                    return newGuess * 100; // Return as percentage
+                }
+    
+                guess = newGuess;
+                iteration++;
+            }
+    
+            return guess * 100; // Return as percentage
+        }
+    </script>
+    
+    
 </body>
 </html>

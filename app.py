@@ -1,51 +1,141 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, session, url_for, render_template, flash, redirect, jsonify
+import mysql.connector
+from mysql.connector import Error
+from werkzeug.security import generate_password_hash, check_password_hash
 from model import get_answer, get_chat, generate_text, summarization_data
-import numpy as np # Import the function to get chatbot answers
 
 app = Flask(__name__)
+app.secret_key = 'your_unique_secret_key_here'  # Set a unique secret key for sessions
 
-# Route to the home page
+def create_connection():
+    try:
+        connection = mysql.connector.connect(
+            host='127.0.0.1',  
+            database='finforge',  
+            user='root', 
+            password='abdulrmohammed@38'
+        )
+        if connection.is_connected():
+            print("Connected to MySQL database")
+            return connection
+    except Error as e:
+        print(f"Error while connecting to MySQL: {e}")
+    return None
+
 @app.route('/')
 def home():
     return render_template('temp.html')
 
-# Route to the signup page
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if request.method == 'POST':
+        fullname = request.form.get('fullname')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+        
+        # Basic validation
+        if not fullname or not email or not password or not confirm_password:
+            flash('Please fill in all fields.', 'danger')
+            return redirect(url_for('signup'))
+
+        # Check if passwords match
+        if password != confirm_password:
+            flash('Passwords do not match. Please try again.', 'danger')
+            return redirect(url_for('signup'))
+
+        # Hash the password
+        hashed_password = generate_password_hash(password)
+
+        # Store data in the database
+        connection = create_connection()
+        if connection is None:
+            flash("Database connection failed. Please try again.", "danger")
+            return redirect(url_for('signup'))
+
+        cursor = connection.cursor()
+        try:
+            # Insert user into the database
+            cursor.execute(
+                '''INSERT INTO users (fullname, email, password) VALUES (%s, %s, %s)''',
+                (fullname, email, hashed_password)
+            )
+            connection.commit()
+            flash('Registration successful! You can now log in.', 'success')
+            return redirect(url_for('services'))
+        except mysql.connector.IntegrityError:
+            flash('Email already exists. Please use a different email.', 'danger')
+            return redirect(url_for('signup'))
+        except Error as e:
+            flash(f"An error occurred: {e}", 'danger')
+            return redirect(url_for('signup'))
+        finally:
+            cursor.close()
+            connection.close()
+
     return render_template('signup.html')
 
-# Route to the login page
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        # Basic validation
+        if not email or not password:
+            flash('Please fill in all fields.', 'danger')
+            return redirect(url_for('login'))
+
+        # Database connection
+        connection = create_connection()
+        if connection is None:
+            flash("Database connection failed. Please try again.", "danger")
+            return redirect(url_for('login'))
+
+        cursor = connection.cursor(dictionary=True)
+
+        try:
+            # Check if the user exists
+            cursor.execute('SELECT * FROM users WHERE email = %s', (email,))
+            user = cursor.fetchone()
+
+            if user and check_password_hash(user['password'], password):
+                # Store session data
+                session['logged_in'] = True
+                session['user_id'] = user['id']
+                session['user_email'] = user['email']
+
+                flash('Login successful!', 'success')
+                return redirect(url_for('services'))
+            else:
+                flash('Login failed. Incorrect email or password.', 'danger')
+                return redirect(url_for('login'))
+        except Error as e:
+            flash(f"An error occurred: {e}", 'danger')
+            return redirect(url_for('login'))
+        finally:
+            cursor.close()
+            connection.close()
+
     return render_template('login.html')
+
+
+@app.route('/services')
+def services():
+    return render_template('services.html')
 
 @app.route('/calculator')
 def calculator():
     return render_template('calculator.html')
 
 @app.route('/stock')
-def stock():
+def stocks():
     return render_template('stock.html')
 
-# Route to the dashboard page
-@app.route('/dashboard', methods=['GET', 'POST'])
+@app.route('/dashboard')
 def dashboard():
-    if request.method == 'POST':
-        # Get user input from form
-        values = {
-            'income': request.form.get('income', 0),
-            'expenditure': request.form.get('expenditure', 0),
-            'month': request.form.get('month', 'Unknown')
-        }
-
-        # Call summarization function using Flan-T5
-        summary = summarization_data(values)
-
-        # Pass summarized data back to the dashboard template
-        return render_template('dashboard.html', summary=summary, **values)
-    
-    # GET request: Just render the dashboard without processing
     return render_template('dashboard.html')
+
 
 # Route to the chatbot page
 @app.route('/chatbot')
@@ -105,7 +195,15 @@ def generate_response():
         return jsonify({'response': "An error occurred. Please try again later."})
 
 
-# Run the Flask app only if this script is executed directly
-if __name__ == "__main__":
-    # Run the Flask app on all available IP addresses (0.0.0.0) at port 5000 in debug mode
-    app.run(host='0.0.0.0', port=5000, debug=True)
+
+
+@app.route('/logout')
+def logout():
+    # Clear the session data
+    session.clear()  # This will remove all session data
+    flash('You have been logged out successfully.', 'success')
+    return redirect(url_for('home'))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
